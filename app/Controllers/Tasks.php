@@ -8,22 +8,22 @@ class Tasks extends BaseController
 {
     private $model;
 
+    private $current_user;
+
     public function __construct()
     {
         $this->model = new \App\Models\TaskModel;
+        $this->current_user = service('auth')->getCurrentUser();
     }
     
 
     public function index()
     {
-        // $data = [
-        //     ['id'=>1,'description'=>'First Task'],
-        //     ['id'=>2,'description'=>'Second Task'],
-        // ];
+        
+        // $auth = service('auth');
+        // $user = $auth->getCurrentUser();
 
-        // $model = new \App\Models\TaskModel;
-
-        $data = $this->model->findAll();
+        $data = $this->model->getTasksByUserId($this->current_user->id);
         // dd($data);           //alternate to var_dump in php core
         return view("Tasks/index", ['tasks' => $data]);
     }
@@ -49,6 +49,10 @@ class Tasks extends BaseController
         // $model = new \App\Models\TaskModel;
 		
 		$task = new Task($this->request->getPost());
+
+        // $user = service('auth')->getCurrentUser();
+
+        $task->user_id = $this->current_user->id;
 		
 		if ($this->model->insert($task)) {
 
@@ -79,7 +83,10 @@ class Tasks extends BaseController
 
         $task = $this->getTaskOr404($id);
 
-        $task->fill($this->request->getPost());
+        $post = $this->request->getPost();
+		unset($post['user_id']);
+
+        $task->fill($post);
 
         if(! $task->hasChanged()){
             return redirect()->back()
@@ -117,7 +124,19 @@ class Tasks extends BaseController
     }
     public function getTaskOr404($id)
     {
-        $task = $this->model->find($id);
+        // $user = service('auth')->getCurrentUser();
+
+        
+		// $task = $this->model->find($id);
+		
+		// if ($task !== null && ($task->user_id !== $user->id)) {
+		
+		// 	$task = null;
+			
+		// }
+		
+
+        $task = $this->model->getTaskByUserId($id, $this->current_user->id);
 
         if($task===null){
             throw new \CodeIgniter\Exceptions\PageNotFoundException("Task with id $id not found");

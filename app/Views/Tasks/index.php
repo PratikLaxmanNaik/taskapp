@@ -8,6 +8,8 @@
 
     <a href="<?=site_url("/tasks/new") ?>">New Task</a>
 
+    <?php if($tasks): ?>
+
     <ul>
         <?php foreach($tasks as $task): ?>
 
@@ -18,6 +20,12 @@
             </li>
             <?php endforeach; ?>
     </ul>
+
+    <?php else: ?>
+
+        <p>No tasks found.</p>
+
+    <?php endif; ?>
 
 <?= $this->endSection() ?>
 
