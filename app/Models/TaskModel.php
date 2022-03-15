@@ -20,11 +20,11 @@ class TaskModel extends \CodeIgniter\Model
             'required'=>'Please enter a description',
         ],
     ];
-    public function getTasksByUserId($id)
+    public function paginateTasksByUserId($id)
     {
         return $this->where('user_id', $id)
                     ->orderBy('created_at')
-                    ->findAll();
+                    ->paginate(5);
     }
     public function getTaskByUserId($id, $user_id)    
     {

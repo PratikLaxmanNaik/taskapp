@@ -23,9 +23,12 @@ class Tasks extends BaseController
         // $auth = service('auth');
         // $user = $auth->getCurrentUser();
 
-        $data = $this->model->getTasksByUserId($this->current_user->id);
+        $data = $this->model->paginateTasksByUserId($this->current_user->id);
         // dd($data);           //alternate to var_dump in php core
-        return view("Tasks/index", ['tasks' => $data]);
+        return view("Tasks/index", [
+            'tasks' => $data,
+            'pager'=> $this->model->pager
+        ]);
     }
     public function show($id)
     {

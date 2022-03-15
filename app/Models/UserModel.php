@@ -14,6 +14,8 @@ class UserModel extends \CodeIgniter\Model
 
     protected $beforeInsert = ['hashPassword'];
 
+    protected $beforeUpdate = ['hashPassword'];
+
     protected function hashPassword(array $data)
     {
         if (isset($data['data']['password'])) {
@@ -21,6 +23,7 @@ class UserModel extends \CodeIgniter\Model
             $data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
             
             unset($data['data']['password']);
+            unset($data['data']['password_confirmation']);
             
         }
         
@@ -48,6 +51,11 @@ class UserModel extends \CodeIgniter\Model
     {
         return $this->where('email', $email)
                       ->first();
+    }
+    public function disablePasswordValidation()
+    {
+        unset($this->validationRules['password']);
+        unset($this->validationRules['password_confirmation']);
     }
     
 

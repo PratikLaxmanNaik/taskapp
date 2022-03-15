@@ -21,6 +21,8 @@
             <?php endforeach; ?>
     </ul>
 
+    <?= $pager->links() ?>
+
     <?php else: ?>
 
         <p>No tasks found.</p>
