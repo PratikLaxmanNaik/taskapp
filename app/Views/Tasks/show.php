@@ -1,28 +1,30 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?>Tasks<?= $this->endSection() ?> 
+<?= $this->section('title') ?><?= lang('Tasks.title_task') ?><?= $this->endSection() ?> 
 
 <?= $this->section('content') ?>
 
-<h1>Task</h1>
+<h1 class="title"><?= lang('Tasks.title_task') ?></h1>
 
-<a href="<?=site_url("/tasks") ?>">&laquo; back to index</a>
+<a href="<?=site_url("/tasks") ?>">&laquo; <?= lang('Tasks.back_to_index') ?></a>
 
-<dl>
-    <dt>ID</dt>
-    <dd><?= $task->id ?></dd>
+<div class="content">
+    <dl>
+        <dt class="has-text-weight-bold"><?= lang('Tasks.id') ?></dt>
+        <dd><?= $task->id ?></dd>
 
-    <dt>Description</dt>
-    <dd><?= esc($task->description) ?></dd>
+        <dt class="has-text-weight-bold"><?= lang('Tasks.description') ?></dt>
+        <dd><?= esc($task->description) ?></dd>
 
-    <dt>created_at</dt>
-    <dd><?= $task->created_at ?></dd>
+        <dt class="has-text-weight-bold"><?= lang('Tasks.created_at') ?></dt>
+        <dd><?= $task->created_at->humanize() ?></dd>
 
-    <dt>updated_at</dt>
-    <dd><?= $task->updated_at ?></dd>
-</dl>
+        <dt class="has-text-weight-bold"><?= lang('Tasks.updated_at') ?></dt>
+        <dd><?= $task->updated_at->humanize() ?></dd>
+    </dl>
+</div>
 
-<a href="<?=site_url("/tasks/edit/".$task->id) ?>">Edit</a>
-<a href="<?=site_url("/tasks/delete/".$task->id) ?>">Delete</a>
+<a class="button is-link" href="<?=site_url("/tasks/edit/".$task->id) ?>"><?= lang('Tasks.edit') ?></a>
+<a class="button is-link" href="<?=site_url("/tasks/delete/".$task->id) ?>"><?= lang('Tasks.delete') ?></a>
 
 <?= $this->endSection() ?>

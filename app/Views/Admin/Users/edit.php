@@ -1,10 +1,10 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?>Edit User<?= $this->endSection() ?> 
+<?= $this->section('title') ?><?= lang('AdminUsers.edit_user') ?><?= $this->endSection() ?> 
 
 <?= $this->section('content') ?>
 
-<h1>Edit User</h1>
+<h1><?= lang('AdminUsers.edit_user') ?></h1>
 
 <?php if(session()->has('errors')): ?>
     <ul>
@@ -14,12 +14,20 @@
     </ul>
 <?php endif; ?>
 
-<?= form_open("/admin/users/update/". $user->id)?>
-    
-    <?= $this->include('Admin/Users/form') ?>
+<div class="container">
+    <?= form_open("/admin/users/update/". $user->id)?>
+        
+        <?= $this->include('Admin/Users/form') ?>
 
-    <button>Save</button>
-    <a href="<?=site_url("/admin/users/show/" .$user->id) ?>">Cancel</a>
-</form>
+        <div class="field is-grouped">
+            <div class="control">    
+                <button class="button is-primary"><?= lang('AdminUsers.save') ?></button>
+            </div>
+            <div class="control">
+                <a class="button" href="<?=site_url("/admin/users/show/" .$user->id) ?>"><?= lang('AdminUsers.cancel') ?></a>
+            </div>
+        </div>
+    </form>
+</div>
 
 <?= $this->endSection() ?>

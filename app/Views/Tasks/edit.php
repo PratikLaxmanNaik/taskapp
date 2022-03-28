@@ -1,10 +1,10 @@
 <?= $this->extend('layouts/default') ?>
 
-<?= $this->section('title') ?>Edit Task<?= $this->endSection() ?> 
+<?= $this->section('title') ?><?= lang('Tasks.edit_task') ?><?= $this->endSection() ?> 
 
 <?= $this->section('content') ?>
 
-<h1>Edit Task</h1>
+<h1 class="title"> <?= lang('Tasks.edit_task') ?></h1>
 
 <?php if(session()->has('errors')): ?>
     <ul>
@@ -14,12 +14,21 @@
     </ul>
 <?php endif; ?>
 
-<?= form_open("Tasks/update/". $task->id)?>
-    
-    <?= $this->include('Tasks/form') ?>
+<div class="container">
+    <?= form_open("Tasks/update/". $task->id)?>
+        
+        <?= $this->include('Tasks/form') ?>
 
-    <button>Save</button>
-    <a href="<?=site_url("/tasks/show/".$task->id) ?>">Cancel</a>
-</form>
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary"><?= lang('Tasks.save') ?></button>
+            </div>
+
+            <div class="control">
+                <a class="button" href="<?=site_url("/tasks/show/".$task->id) ?>"><?= lang('Tasks.cancel') ?></a>
+            </div>
+        </div>
+    </form>
+</div>
 
 <?= $this->endSection() ?>

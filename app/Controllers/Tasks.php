@@ -60,13 +60,13 @@ class Tasks extends BaseController
 		if ($this->model->insert($task)) {
 
 			return redirect()->to("/tasks/show/{$this->model->insertID}")
-							 ->with('info', 'Task created successfully');
+							 ->with('info', lang('Tasks.create_successful'));
 		
         } else {
 
 			return redirect()->back()
 							 ->with('errors', $this->model->errors())
-							 ->with('warning', 'Invalid data')
+							 ->with('warning', lang('App.messages.invalid'))
 							 ->withInput();
 		}
 	}
@@ -93,7 +93,7 @@ class Tasks extends BaseController
 
         if(! $task->hasChanged()){
             return redirect()->back()
-                             ->with('warning','Nothing to update')
+                             ->with('warning',lang('App.messages.no_change'))
                              ->withInput();
         }
 
@@ -102,11 +102,11 @@ class Tasks extends BaseController
         if($this->model->save($task)){
         // if ($result) {
             return redirect()->to("/tasks/show/$id")
-                ->with('info', 'Task updated successfully');
+                ->with('info', lang('Tasks.update_successful'));
         } else {
             return redirect()->back()
                 ->with('errors', $this->model->errors())
-                ->with('warning', 'Invalid Data')
+                ->with('warning',lang('App.messages.invalid'))
                 ->withInput();
         }
     }
@@ -118,13 +118,26 @@ class Tasks extends BaseController
             $this->model->delete($id);
 
             return redirect()->to('/tasks')
-                             ->with('info','Task Deleted');
+                             ->with('info',lang('Tasks.deleted'));
         }
 
         return view('Tasks/delete', [
             'task'=>$task
         ]);
     }
+
+    public function search()
+    {
+        $tasks = $this->model->search($this->request->getGet('q'), $this->current_user->id);
+
+        // var_dump($tasks);
+
+        // $this->response->setContentType('application/json');
+        // echo json_encode($tasks);
+
+        return $this->response->setJSON($tasks);
+    }
+
     public function getTaskOr404($id)
     {
         // $user = service('auth')->getCurrentUser();
@@ -142,8 +155,9 @@ class Tasks extends BaseController
         $task = $this->model->getTaskByUserId($id, $this->current_user->id);
 
         if($task===null){
-            throw new \CodeIgniter\Exceptions\PageNotFoundException("Task with id $id not found");
+            throw new \CodeIgniter\Exceptions\PageNotFoundException(lang('Tasks.task_not_found') . ': ' .$id);
         }
         return $task;
     }
+
 }

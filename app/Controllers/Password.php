@@ -23,11 +23,11 @@ class Password extends BaseController
             // dd($user);
             $this->sendResetEmail($user);
 
-            return redirect()->to("/password/resetsent");
+            return redirect()->to("/{$this->locale}/password/resetsent");
 
         } else {
             return redirect()->back()
-                             ->with('warning','No active user found with that email address')
+                             ->with('warning',lang('Password.no_user_found'))
                              ->withInput();
                             
         }
@@ -52,7 +52,7 @@ class Password extends BaseController
         } else {
             
             return redirect()->to('/password/forgot')
-                             ->with('warning', 'Link invalid or has expired. Please try again');
+                             ->with('warning', lang('Password.invalid_link'));
                              
         }
     }
@@ -79,14 +79,14 @@ class Password extends BaseController
 
                 return redirect()->back()
                                  ->with('errors', $model->errors())
-                                 ->with('warning', 'Invalid data');
+                                 ->with('warning', lang('App.messages.invalid'));
 
             }
             
         } else {
             
             return redirect()->to('/password/forgot')
-                             ->with('warning', 'Link invalid or has expired. Please try again');
+                             ->with('warning', lang('Password.invalid_link'));
                              
         }
     }
@@ -102,7 +102,7 @@ class Password extends BaseController
 
         $email->setTo($user->email);
 
-        $email->setSubject('Password Reset');
+        $email->setSubject('Password.email_subject');
 
         $message = view('Password/reset_email',[
           'token'=>$user->reset_token
